@@ -6,14 +6,22 @@ public class BaseResponse {
 
     private int code;
     private String message;
+    private Object data;
 
-    public static int getSUCCESS() {
-        return SUCCESS;
+    public BaseResponse(int code, String message) {
+        this.code = code;
+        this.message = message;
     }
 
-    public static int getFAIL() {
-        return FAIL;
+    public BaseResponse(int code, String message, Object data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
     }
+
+    public BaseResponse() {
+    }
+
 
     public int getCode() {
         return code;
@@ -29,5 +37,13 @@ public class BaseResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 }

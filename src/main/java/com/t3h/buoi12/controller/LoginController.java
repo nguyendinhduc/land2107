@@ -1,9 +1,14 @@
-package com.t3h.buoi12;
+package com.t3h.buoi12.controller;
 
 import com.t3h.buoi12.model.BaseResponse;
 import com.t3h.buoi12.model.LoginRequest;
+import com.t3h.buoi12.model.RegisterRequest;
 import com.t3h.buoi12.model.UserLogin;
+import com.t3h.buoi12.service.UserProfileService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +18,10 @@ import java.util.List;
 
 @RestController
 public class LoginController {
+//    Autowired: lay cac doi duoi Bean(@Service, @Component, @Repository)
+    @Autowired
+    private UserProfileService service;
+
     // link:  {baselink}/{endpoint}
     @GetMapping("/user/all")
     public List<UserLogin> getAllUser() {
@@ -40,22 +49,21 @@ public class LoginController {
 
     @PostMapping("/user")
     public BaseResponse login(@RequestBody LoginRequest request) {
-        List<UserLogin> userLogins = getAllUserFromDB();
-        for (UserLogin userLogin : userLogins) {
-            if (userLogin.getUsername().equals(request.getUsername()) &&
-                    userLogin.getPassword().equals(request.getPassword())) {
-                //login thanh cong
-                BaseResponse res = new BaseResponse();
-                res.setCode(BaseResponse.SUCCESS);
-                res.setMessage("Login success");
-                return res;
-            }
-        }
-        //login that bai
-        BaseResponse res = new BaseResponse();
-        res.setCode(BaseResponse.FAIL);
-        res.setMessage("Login fail");
-        return res;
+        return service.login(request);
+    }
+
+    @PostMapping("/api/register")
+    public Object register(
+            @RequestBody RegisterRequest request
+    ){
+        return service.register(request);
+    }
+
+    @GetMapping("/api/{userId}")
+    public Object getUser(
+            @PathVariable("userId") int userId
+    ){
+        return service.getUser(userId);
     }
 
     @GetMapping("/ahihi")
