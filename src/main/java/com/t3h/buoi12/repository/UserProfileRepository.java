@@ -33,4 +33,22 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, Intege
     List<UserProfile> findByUserUsername(
             @Param("username") String username
     );
+
+    @Query(nativeQuery = true,
+            value = "select * from user_profile " +
+                    "where id not in " +
+                    "(select user_profile.id from user_profile " +
+                    "join " +
+                    "(select friend.sender_id, friend.receiver_id from " +
+                    "friend " +
+                    "where (friend.sender_id = :userId or friend.receiver_id = :userId) " +
+                    ") as temp " +
+                    "on user_profile.id = temp.sender_id or user_profile.id = temp.receiver_id) " +
+                    "and (:isNUll = true or (user_profile.username like :content or user_profile.fullname like :content)) " +
+                    "and user_profile.id <> :userId")
+    List<UserProfile> findUnfriend(
+            @Param("userId") int userId,
+            @Param("isNUll") boolean isNUll,
+            @Param("content") String content
+    );
 }

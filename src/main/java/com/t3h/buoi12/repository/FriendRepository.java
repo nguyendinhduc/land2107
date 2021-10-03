@@ -2,23 +2,28 @@ package com.t3h.buoi12.repository;
 
 import com.t3h.buoi12.model.entity.Friend;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Repository
 public interface FriendRepository extends JpaRepository<Friend, Integer> {
+
     @Query(nativeQuery = true,
-    value = "select user_profile.id, user_profile.username, user_profile.email, user_profile.avatar from user_profile " +
-            "join " +
-            "( " +
-            "select friend.sender_id,  friend.receiver_id from  " +
-            "friend " +
-            "where (friend.sender_id = :userId or friend.receiver_id = :userId) and (friend.status = 'accepted') " +
-            ") as temp " +
-            "on user_profile.id = temp.sender_id or user_profile.id = temp.receiver_id " +
-            "where user_profile.id <> :userId")
-    List<Friend> findFriendByUserId(
+            value = "select * from friend where sender_id = :userId or receiver_id = :userId")
+    List<Friend> getAllFriend(
             @Param("userId") int userId
     );
+
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true,
+            value = "update friend set status = :status where " +
+                    "(sender_id = :userId and receiver_id = :friendId) " +
+                    "or (sender_id = :friendId and receiver_id = :userId)")
+    void updateStatusFriend(int userId, int friendId, String status);
 }

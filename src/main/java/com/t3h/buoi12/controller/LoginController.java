@@ -52,7 +52,7 @@ public class LoginController {
         return service.login(request);
     }
 
-    @PostMapping("/api/register")
+    @PostMapping("/auth/register")
     public Object register(
             @RequestBody RegisterRequest request
     ){
