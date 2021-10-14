@@ -121,6 +121,14 @@ public class UserProfileService {
 
     public Object makeFriend(int friendId) {
         int userId = JWTUtil.getUserLogin();
+        //query lay role_id thong qua user_role
+        //query role name (key) thong qua role
+//        if ( role == "ADMIN"){
+//
+//        }else {
+//
+//        }
+
         List<Friend> friends = friendRepository.getAllFriend(userId);
         boolean isFriend = false;
         for (Friend friend : friends) {

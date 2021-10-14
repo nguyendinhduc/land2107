@@ -30,8 +30,8 @@ public class JWTUtil {
                 .parseClaimsJws(token)
                 .getBody();
         int id = Integer.parseInt(claims.getSubject());
-        String email = claims.get("emailTemp", String.class);
-        System.out.println("email: "+email);
+//        String email = claims.get("emailTemp", String.class);
+//        System.out.println("email: "+email);
         return id;
     }
 

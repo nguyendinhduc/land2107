@@ -1,5 +1,7 @@
 package com.t3h.buoi12.model.entity;
 
+
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Column;
@@ -24,6 +26,7 @@ public class UserProfile {
     private String birthday;
     @Column(name = "created_time")
     @CreatedDate
+    @CreationTimestamp
     private Timestamp createdTime;
 
     public int getId() {
@@ -66,10 +69,14 @@ public class UserProfile {
         this.sex = sex;
     }
 
+    @CreatedDate
+    @CreationTimestamp
     public Timestamp getCreatedTime() {
         return createdTime;
     }
 
+    @CreatedDate
+    @CreationTimestamp
     public void setCreatedTime(Timestamp createdAt) {
         this.createdTime = createdAt;
     }
