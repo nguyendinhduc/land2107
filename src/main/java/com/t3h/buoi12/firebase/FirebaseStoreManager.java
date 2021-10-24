@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -23,8 +24,7 @@ public class FirebaseStoreManager {
 
     public FirebaseStoreManager() {
         try {
-            File file = new ClassPathResource("backendland2107.json").getFile();
-            InputStream inputStream = new FileInputStream(file);
+            InputStream inputStream = new ClassPathResource("backendland2107.json").getInputStream();
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(inputStream))
                     .setDatabaseUrl("https://backendland2107.appspot.com")
