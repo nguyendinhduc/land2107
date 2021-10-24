@@ -47,7 +47,7 @@ public class LoginController {
         return userLogin;
     }
 
-    @PostMapping("/user")
+    @PostMapping("/login")
     public BaseResponse login(@RequestBody LoginRequest request) {
         return service.login(request);
     }
